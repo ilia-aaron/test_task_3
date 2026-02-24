@@ -1,8 +1,9 @@
-import type { AgGridReactProps } from "ag-grid-react";
+import type { AgGridReactProps, CustomCellRendererProps } from "ag-grid-react";
 import type { GridApi } from "ag-grid-community";
+import type { ColDef } from "ag-grid-enterprise";
 
 // Берём все пропсы AG Grid, но тему и локаль мы задаём сами — снаружи их не трогают
-type OmittedProps = "theme" | "localeText" | "rowModelType";
+type OmittedProps = "theme" | "localeText";
 
 export interface GpnTableProps<TData> extends Omit<
   AgGridReactProps<TData>,
@@ -16,3 +17,13 @@ export interface GpnTableProps<TData> extends Omit<
 export interface GpnTableRef {
   gridApi: GridApi | null;
 }
+
+export interface GpnColDef<TData = any, TValue = any> extends ColDef<
+  TData,
+  TValue
+> {}
+
+export type GpnCustomCellRendererProps<TData, TValue> = CustomCellRendererProps<
+  TData,
+  TValue
+>;
