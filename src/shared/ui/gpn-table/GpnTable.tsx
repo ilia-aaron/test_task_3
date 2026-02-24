@@ -9,9 +9,11 @@ import {
 import { AgGridReact } from "ag-grid-react";
 import {
   type GridReadyEvent,
+  AllCommunityModule,
   ModuleRegistry,
   ClientSideRowModelModule,
 } from "ag-grid-community";
+import { ServerSideRowModelModule } from "ag-grid-enterprise";
 
 import type { GpnTableProps, GpnTableRef } from "./types";
 import {
@@ -23,7 +25,11 @@ import {
 
 import { Loader } from "@consta/uikit/Loader";
 
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+ModuleRegistry.registerModules([
+  AllCommunityModule,
+  ClientSideRowModelModule,
+  ServerSideRowModelModule,
+]);
 
 function AppTableInner<TData>(
   props: GpnTableProps<TData>,
