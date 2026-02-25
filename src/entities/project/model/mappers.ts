@@ -21,13 +21,14 @@ export const projectDtoToProjectMapper = (projectDto: ProjectDto): Project => {
 
 export const projectSearchParamsToDto = (
   params: SearchProjectsParams,
-): GetProjectsParamsDto => ({
-  _page: params.page,
-  _limit: params.limit,
-  _sort: params.sort,
-  _order: params.order,
-  department: params.department,
-  status: params.status,
-  manager: params.manager,
-  priority: params.priority,
-});
+): GetProjectsParamsDto => {
+  const { page, limit, sort, order, ...filters } = params;
+
+  return {
+    _page: page,
+    _limit: limit,
+    _sort: sort,
+    _order: order,
+    ...filters,
+  };
+};

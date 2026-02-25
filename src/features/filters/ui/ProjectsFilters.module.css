@@ -2,6 +2,12 @@
   display: flex;
   align-items: end;
   margin-bottom: var(--space-m);
+  gap: var(--space-m);
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
 }
 
 .dropdown {

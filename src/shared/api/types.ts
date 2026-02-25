@@ -4,3 +4,5 @@ export type DepartmentDto =
   | "Переработка"
   | "Логистика"
   | "Сбыт";
+
+export type FilterType = "lt" | "lte" | "gt" | "gte" | "eq" | "ne" | "in";

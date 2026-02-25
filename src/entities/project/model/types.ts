@@ -1,4 +1,4 @@
-import type { ProjectStatusDto, PriorityDto } from "shared/api";
+import type { SearchFilters, ProjectStatusDto, PriorityDto } from "shared/api";
 import type { Department, PaginationData } from "shared/types";
 
 export type ProjectStatus = ProjectStatusDto;
@@ -18,15 +18,11 @@ export interface Project {
   priority: Priority;
 }
 
-export interface SearchProjectsParams {
+export type SearchProjectsParams = Partial<Record<SearchFilters, string[]>> & {
   page?: number;
   limit?: number;
   sort?: string;
   order?: "asc" | "desc";
-  department?: string;
-  status?: string;
-  manager?: string;
-  priority?: string;
-}
+};
 
 export type SearchProjectsResponse = PaginationData<Project>;
