@@ -1,0 +1,9 @@
+.projectsFilters {
+  display: flex;
+  align-items: end;
+  margin-bottom: var(--space-m);
+}
+
+.dropdown {
+  z-index: 100 !important;
+}

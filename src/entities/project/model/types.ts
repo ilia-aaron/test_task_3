@@ -26,6 +26,7 @@ export interface SearchProjectsParams {
   department?: string;
   status?: string;
   manager?: string;
+  priority?: string;
 }
 
 export type SearchProjectsResponse = PaginationData<Project>;
