@@ -5,6 +5,7 @@ import { PriorityRenderer } from "./renderers/PriorityRenderer";
 import { ProgressRenderer } from "./renderers/ProgressRenderer";
 import { StatusRenderer } from "./renderers/StatusRenderer";
 
+// конфигурация столбцов таблицы проектов
 export const columnDefs: GpnColDef<Project>[] = [
   {
     field: "projectName",

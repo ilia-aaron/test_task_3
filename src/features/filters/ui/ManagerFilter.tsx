@@ -1,7 +1,8 @@
-import { type MouseEvent, useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { SearchFilterKey, withModifier } from "shared/api";
 import { useFiltersContext } from "../model/context";
 import { useFilterManager } from "../hooks/useFilterManager";
+import { useManagerSelection, typeOptions } from "../hooks/useManagerSelection";
 import { Virtuoso } from "react-virtuoso";
 
 import { TextField } from "@consta/uikit/TextField";
@@ -14,35 +15,12 @@ import { ChoiceGroup } from "@consta/uikit/ChoiceGroup";
 import styles from "./ManagerFilter.module.css";
 import { ManagerFilterSelectedInfo } from "./ManagerFilterSelectedInfo";
 
-type FilterType = "include" | "exclude";
-type FilterTypeOption = {
-  label: string;
-  value: FilterType;
-};
-
-// дадим возможность выбирать либо выбирать исключать
-const typeOptions: FilterTypeOption[] = [
-  { label: "Выбрать", value: "include" },
-  { label: "Исключить", value: "exclude" },
-];
 const MANAGER_ID_NE = withModifier(SearchFilterKey.ManagerId, "ne");
 
 export const ManagerFilter = () => {
   const { onChange, resetKey } = useFiltersContext();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [filterType, setFilterType] = useState<FilterTypeOption>(
-    typeOptions[0],
-  );
-
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const [checkedManagers, setCheckedManagers] = useState<Set<string>>(
-    new Set([]),
-  );
-  const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
-  const [excludeManagers, setExcludeManagers] = useState<Set<string>>(
-    new Set([]),
-  );
 
   const {
     managers,
@@ -53,94 +31,28 @@ export const ManagerFilter = () => {
     loadMore,
   } = useFilterManager();
 
-  useEffect(() => {
-    if (resetKey === 0) return;
-    setCheckedManagers(new Set());
-    setExcludeManagers(new Set());
-    setIsAllChecked(false);
-    setFilterType(typeOptions[0]);
-  }, [resetKey]);
-
-  const handleToggleManager = (id: string): void => {
-    if (isAllChecked) {
-      const next = new Set(excludeManagers);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      setExcludeManagers(next);
-    } else {
-      const next = new Set(checkedManagers);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      setCheckedManagers(next);
-    }
-  };
-
-  const handleSelectAll = (): void => {
-    if (searchQuery) {
-      const visibleIds = managers.map((m) => String(m.id));
-      const allVisibleChecked = visibleIds.every((id) =>
-        checkedManagers.has(id),
-      );
-
-      if (allVisibleChecked) {
-        setCheckedManagers((prev) => {
-          const next = new Set(prev);
-          visibleIds.forEach((id) => next.delete(id));
-          return next;
-        });
-      } else {
-        setCheckedManagers((prev) => {
-          const next = new Set(prev);
-          visibleIds.forEach((id) => next.add(id));
-          return next;
-        });
-      }
-      return;
-    }
-
-    setCheckedManagers(new Set());
-    setExcludeManagers(new Set());
-    if (isAllChecked) {
-      setIsAllChecked(false);
-      return;
-    }
-    setIsAllChecked(true);
-  };
+  const {
+    filterType,
+    setFilterType,
+    checkedManagers,
+    excludeManagers,
+    isAllChecked,
+    handleToggleManager,
+    handleSelectAll,
+    getIsChecked,
+    handleResetInternal,
+    checkAllButtonLabel,
+    selectedCount,
+  } = useManagerSelection({
+    managers,
+    searchQuery,
+    totalManagersCount,
+    resetKey,
+  });
 
   const openModal = () => {
     setIsModalOpen(true);
     inputRef.current?.blur();
-  };
-
-  const getIsChecked = (id: string): boolean => {
-    if (isAllChecked) {
-      return !excludeManagers.has(id);
-    }
-
-    return checkedManagers.has(id);
-  };
-
-  const checkAllButtonLabel = isAllChecked
-    ? "Снять выделение"
-    : filterType.value === "include"
-      ? "Выбрать всех"
-      : "Исключить всех";
-
-  const selectedCount = isAllChecked
-    ? totalManagersCount - excludeManagers.size
-    : checkedManagers.size;
-
-  const handleReset = (e: MouseEvent): void => {
-    e.stopPropagation();
-    setCheckedManagers(new Set());
-    setExcludeManagers(new Set());
-    setIsAllChecked(false);
   };
 
   const applyFilter = (): void => {
@@ -179,6 +91,15 @@ export const ManagerFilter = () => {
     );
     onChange(isInclude ? MANAGER_ID_NE : SearchFilterKey.ManagerId, []);
     setIsModalOpen(false);
+  };
+
+  const handleReset = (e?: React.MouseEvent): void => {
+    if (e) {
+      e.stopPropagation();
+    }
+    handleResetInternal();
+    onChange(SearchFilterKey.ManagerId, []);
+    onChange(MANAGER_ID_NE, []);
   };
 
   return (

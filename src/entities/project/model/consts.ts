@@ -1,4 +1,6 @@
 import type { ProjectStatus, Priority } from "./types";
+// Добавлены Enums для удобства использования в коде дабы избежать ошибок при написании строк, и выбирать значения из списка
+// Сделано через const as const потому что Enum в typescript нельзя расширять, объединять и там нет сравнения по строке
 
 export const STATUS_ENUM = {
   ACTIVE: "Активный",
