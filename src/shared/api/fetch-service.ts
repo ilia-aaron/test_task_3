@@ -4,7 +4,7 @@
 
 export type BaseRequestParams = Record<
   string,
-  string | number | boolean | undefined | null
+  string | number | boolean | undefined | null | string[]
 >;
 export type FetchServiceRequestOptions = Omit<RequestInit, "method"> & {
   params?: BaseRequestParams;
@@ -21,7 +21,13 @@ class FetchService {
 
     if (options.params) {
       Object.entries(options.params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "") {
+        if (Array.isArray(value)) {
+          value.forEach((v) => {
+            if (v !== undefined && v !== null && v !== "") {
+              urlObj.searchParams.append(key, String(v));
+            }
+          });
+        } else if (value !== undefined && value !== null && value !== "") {
           urlObj.searchParams.set(key, String(value));
         }
       });

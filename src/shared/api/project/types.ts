@@ -1,4 +1,4 @@
-import { type DepartmentDto } from "..";
+import { FilterType, type DepartmentDto } from "..";
 
 export type ProjectStatusDto =
   | "Активный"
@@ -21,16 +21,28 @@ export interface ProjectDto {
   priority: PriorityDto;
 }
 
-export interface GetProjectsParamsDto {
+export enum SearchFilterKey {
+  Department = "department",
+  Status = "status",
+  ManagerId = "managerId",
+  Priority = "priority",
+}
+
+export type SearchFilterWithModifier = `${SearchFilterKey}_${FilterType}`;
+export type SearchFilters = SearchFilterKey | SearchFilterWithModifier;
+
+// создаем модификаторы для фильтров
+export const withModifier = <K extends SearchFilterKey, M extends FilterType>(
+  key: K,
+  modifier: M,
+): `${K}_${M}` => `${key}_${modifier}` as `${K}_${M}`;
+
+export type GetProjectsParamsDto = Partial<Record<SearchFilters, string[]>> & {
   _page?: number;
   _limit?: number;
   _sort?: string;
   _order?: "asc" | "desc";
-  department?: string;
-  status?: string;
-  manager?: string;
-  priority?: string;
-}
+};
 
 export interface GetProjectsResponseDto {
   data: ProjectDto[];

@@ -18,6 +18,7 @@ export const searchProjects = async (
   params: SearchProjectsParams,
 ): Promise<SearchProjectsResponse> => {
   const dtoSearchParams = projectSearchParamsToDto(params);
+
   const { data, totalCount } = await projectApi.searchProjects(dtoSearchParams);
 
   const mappedData = data.map(projectDtoToProjectMapper);

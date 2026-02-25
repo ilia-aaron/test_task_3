@@ -1,0 +1,17 @@
+.selectionInfo {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.selectionText {
+  margin: 0;
+  display: inline-block;
+}
+
+.emptySelectionText {
+  margin-bottom: 2px;
+}

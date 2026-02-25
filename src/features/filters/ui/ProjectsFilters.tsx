@@ -6,6 +6,7 @@ import {
   STATUSES,
   PRIORITIES,
 } from "entities/project";
+import { SearchFilterKey, withModifier } from "shared/api";
 import { FiltersContext } from "../model/context";
 
 import { FieldGroup } from "@consta/uikit/FieldGroup";
@@ -13,6 +14,7 @@ import { Button } from "@consta/uikit/Button";
 import { DepartmentFilter } from "./DepartmentFilter";
 import { StatusFilter } from "./StatusFilter";
 import { PriorityFilter } from "./PriorityFilter";
+import { ManagerFilter } from "./ManagerFilter";
 
 import styles from "./ProjectsFilters.module.css";
 
@@ -22,18 +24,23 @@ interface Props {
 
 export const ProjectsFilters = ({ onApply }: Props) => {
   const [localFilters, setLocalFilters] = useState<SearchProjectsParams>({
-    department: "",
-    status: "",
-    manager: "",
-    priority: "",
+    [SearchFilterKey.Department]: [],
+    [SearchFilterKey.Status]: [],
+    [SearchFilterKey.ManagerId]: [],
+    [withModifier(SearchFilterKey.ManagerId, "ne")]: [],
+    [SearchFilterKey.Priority]: [],
   });
+  const [resetKey, setResetKey] = useState<number>(0);
 
   const isFiltersEmpty = Object.values(localFilters).every(
-    (value) => value === "",
+    (value) => Array.isArray(value) && value.length === 0,
   );
 
   const handleFilterChange = useCallback(
-    (key: keyof SearchProjectsParams, value: string): void => {
+    <K extends keyof SearchProjectsParams>(
+      key: K,
+      value: SearchProjectsParams[K],
+    ): void => {
       setLocalFilters((prev) => ({ ...prev, [key]: value }));
     },
     [],
@@ -43,31 +50,36 @@ export const ProjectsFilters = ({ onApply }: Props) => {
     onApply(localFilters);
   };
 
-  const handleReset = () => {
+  const handleReset = (): void => {
     setLocalFilters({
-      department: "",
-      status: "",
-      manager: "",
-      priority: "",
+      [SearchFilterKey.Department]: [],
+      [SearchFilterKey.Status]: [],
+      [SearchFilterKey.ManagerId]: [],
+      [withModifier(SearchFilterKey.ManagerId, "ne")]: [],
+      [SearchFilterKey.Priority]: [],
     });
+    setResetKey((prev) => prev + 1);
     onApply({});
   };
 
   return (
     <FiltersContext.Provider
-      value={{ filters: localFilters, onChange: handleFilterChange }}
+      value={{ filters: localFilters, onChange: handleFilterChange, resetKey }}
     >
       <FieldGroup form="round" size="m" className={styles.projectsFilters}>
         <DepartmentFilter items={DEPARTMENTS} />
         <StatusFilter items={STATUSES} />
         <PriorityFilter items={PRIORITIES} />
-        <Button
-          view="ghost"
-          label="Сбросить"
-          onClick={handleReset}
-          disabled={isFiltersEmpty}
-        />
-        <Button label="Применить" onClick={handleApply} />
+        <ManagerFilter />
+        <div className={styles.actions}>
+          <Button
+            view="ghost"
+            label="Сбросить"
+            onClick={handleReset}
+            disabled={isFiltersEmpty}
+          />
+          <Button label="Применить" onClick={handleApply} />
+        </div>
       </FieldGroup>
     </FiltersContext.Provider>
   );

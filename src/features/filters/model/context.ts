@@ -3,7 +3,11 @@ import type { SearchProjectsParams } from "entities/project";
 
 export interface FiltersContextType {
   filters: SearchProjectsParams;
-  onChange: (key: keyof SearchProjectsParams, value: string) => void;
+  onChange: <K extends keyof SearchProjectsParams>(
+    key: K,
+    value: SearchProjectsParams[K],
+  ) => void;
+  resetKey: number;
 }
 
 export const FiltersContext = createContext<FiltersContextType | null>(null);
