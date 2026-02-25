@@ -1,5 +1,6 @@
 import { DEFAULT_QUERY_LIMIT, DEFAULT_QUERY_PAGE } from "../api";
 
+// Создание базовых параметров пагинации
 export const createBasePaginationRequestData = <
   T extends { _page?: number; _limit?: number },
 >(

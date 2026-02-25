@@ -4,6 +4,7 @@ import type {
 } from "ag-grid-enterprise";
 import { type SearchProjectsParams, searchProjects } from "entities/project";
 
+// Создание datasource для ag-grid
 export const createServerSideDatasource = (
   filters: SearchProjectsParams,
 ): IServerSideDatasource => ({

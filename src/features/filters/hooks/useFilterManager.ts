@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { searchManagers } from "entities/manager";
 import type { Manager } from "entities/manager";
 import { DEFAULT_QUERY_LIMIT } from "shared/api";
+// Кастомный хук для бесконечной подгрузки менеджеров, этот хук можно переиспользовать в дальнейшем для любых других компонентов
 
 export const useFilterManager = () => {
   const [managers, setManagers] = useState<Manager[]>([]);

@@ -1,6 +1,7 @@
 import type { PaginationData } from "shared/types";
 import { DEFAULT_QUERY_LIMIT, DEFAULT_QUERY_PAGE } from "shared/api";
 
+// Создание объекта с пагинацией
 type PaginationDataParams<T> = {
   page?: number;
   limit?: number;

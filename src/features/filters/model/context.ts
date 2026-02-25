@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import type { SearchProjectsParams } from "entities/project";
+// Контекст для хранения фильтров и их изменений для того чтобы избавится от props / emit hell
 
 export interface FiltersContextType {
   filters: SearchProjectsParams;
