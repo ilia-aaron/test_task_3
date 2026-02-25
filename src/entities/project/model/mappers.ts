@@ -29,4 +29,5 @@ export const projectSearchParamsToDto = (
   department: params.department,
   status: params.status,
   manager: params.manager,
+  priority: params.priority,
 });

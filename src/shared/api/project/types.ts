@@ -29,6 +29,7 @@ export interface GetProjectsParamsDto {
   department?: string;
   status?: string;
   manager?: string;
+  priority?: string;
 }
 
 export interface GetProjectsResponseDto {
