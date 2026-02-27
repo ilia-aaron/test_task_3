@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.17.24",
+    "concurrently": "^9.2.1",
     "json-server": "0.17.4"
   },
   "scripts": {
