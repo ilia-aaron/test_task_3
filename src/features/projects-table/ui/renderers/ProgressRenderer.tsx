@@ -1,10 +1,11 @@
+import { memo } from "react";
 import type { Project } from "entities/project";
 import type { GpnCustomCellRendererProps } from "shared/ui/gpn-table";
 import { ProgressSpin } from "@consta/uikit/ProgressSpin";
 
-export const ProgressRenderer = (
-  props: GpnCustomCellRendererProps<Project, number>,
-) => {
+type Props = GpnCustomCellRendererProps<Project, number>;
+
+export const ProgressRenderer = memo((props: Props) => {
   const value = props.value ?? 0;
 
   const color =
@@ -28,4 +29,4 @@ export const ProgressRenderer = (
       <span>{value}%</span>
     </div>
   );
-};
+});

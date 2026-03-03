@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { SearchFilterKey, withModifier } from "shared/api";
+import { SearchFilterKeyEnum, withModifier } from "shared/api";
 import { useFiltersContext } from "../model/context";
 import { useFilterManager } from "../hooks/useFilterManager";
 import { useManagerSelection, typeOptions } from "../hooks/useManagerSelection";
@@ -15,7 +15,7 @@ import { ChoiceGroup } from "@consta/uikit/ChoiceGroup";
 import styles from "./ManagerFilter.module.css";
 import { ManagerFilterSelectedInfo } from "./ManagerFilterSelectedInfo";
 
-const MANAGER_ID_NE = withModifier(SearchFilterKey.ManagerId, "ne");
+const MANAGER_ID_NE = withModifier(SearchFilterKeyEnum.ManagerId, "ne");
 
 export const ManagerFilter = () => {
   const { onChange, resetKey } = useFiltersContext();
@@ -60,15 +60,15 @@ export const ManagerFilter = () => {
     const isInclude = filterType.value === "include";
 
     if (isAllChecked && !excludeManagers.size) {
-      onChange(SearchFilterKey.ManagerId, []);
+      onChange(SearchFilterKeyEnum.ManagerId, []);
       setIsModalOpen(false);
       return;
     }
 
     if (isAllChecked && excludeManagers.size < halfCountManagers) {
-      onChange(isInclude ? SearchFilterKey.ManagerId : MANAGER_ID_NE, []);
+      onChange(isInclude ? SearchFilterKeyEnum.ManagerId : MANAGER_ID_NE, []);
       onChange(
-        isInclude ? MANAGER_ID_NE : SearchFilterKey.ManagerId,
+        isInclude ? MANAGER_ID_NE : SearchFilterKeyEnum.ManagerId,
         Array.from(excludeManagers),
       );
       setIsModalOpen(false);
@@ -76,9 +76,9 @@ export const ManagerFilter = () => {
     }
 
     if (checkedManagers.size > halfCountManagers) {
-      onChange(isInclude ? SearchFilterKey.ManagerId : MANAGER_ID_NE, []);
+      onChange(isInclude ? SearchFilterKeyEnum.ManagerId : MANAGER_ID_NE, []);
       onChange(
-        isInclude ? MANAGER_ID_NE : SearchFilterKey.ManagerId,
+        isInclude ? MANAGER_ID_NE : SearchFilterKeyEnum.ManagerId,
         Array.from(checkedManagers),
       );
       setIsModalOpen(false);
@@ -86,10 +86,10 @@ export const ManagerFilter = () => {
     }
 
     onChange(
-      isInclude ? SearchFilterKey.ManagerId : MANAGER_ID_NE,
+      isInclude ? SearchFilterKeyEnum.ManagerId : MANAGER_ID_NE,
       Array.from(checkedManagers),
     );
-    onChange(isInclude ? MANAGER_ID_NE : SearchFilterKey.ManagerId, []);
+    onChange(isInclude ? MANAGER_ID_NE : SearchFilterKeyEnum.ManagerId, []);
     setIsModalOpen(false);
   };
 
@@ -98,7 +98,7 @@ export const ManagerFilter = () => {
       e.stopPropagation();
     }
     handleResetInternal();
-    onChange(SearchFilterKey.ManagerId, []);
+    onChange(SearchFilterKeyEnum.ManagerId, []);
     onChange(MANAGER_ID_NE, []);
   };
 

@@ -6,7 +6,7 @@ import {
   STATUSES,
   PRIORITIES,
 } from "entities/project";
-import { SearchFilterKey, withModifier } from "shared/api";
+import { SearchFilterKeyEnum, withModifier } from "shared/api";
 import { FiltersContext } from "../model/context";
 
 import { FieldGroup } from "@consta/uikit/FieldGroup";
@@ -24,11 +24,11 @@ interface Props {
 
 export const ProjectsFilters = ({ onApply }: Props) => {
   const [localFilters, setLocalFilters] = useState<SearchProjectsParams>({
-    [SearchFilterKey.Department]: [],
-    [SearchFilterKey.Status]: [],
-    [SearchFilterKey.ManagerId]: [],
-    [withModifier(SearchFilterKey.ManagerId, "ne")]: [],
-    [SearchFilterKey.Priority]: [],
+    [SearchFilterKeyEnum.Department]: [],
+    [SearchFilterKeyEnum.Status]: [],
+    [SearchFilterKeyEnum.ManagerId]: [],
+    [withModifier(SearchFilterKeyEnum.ManagerId, "ne")]: [],
+    [SearchFilterKeyEnum.Priority]: [],
   });
   const [resetKey, setResetKey] = useState<number>(0);
 
@@ -52,11 +52,11 @@ export const ProjectsFilters = ({ onApply }: Props) => {
 
   const handleReset = (): void => {
     setLocalFilters({
-      [SearchFilterKey.Department]: [],
-      [SearchFilterKey.Status]: [],
-      [SearchFilterKey.ManagerId]: [],
-      [withModifier(SearchFilterKey.ManagerId, "ne")]: [],
-      [SearchFilterKey.Priority]: [],
+      [SearchFilterKeyEnum.Department]: [],
+      [SearchFilterKeyEnum.Status]: [],
+      [SearchFilterKeyEnum.ManagerId]: [],
+      [withModifier(SearchFilterKeyEnum.ManagerId, "ne")]: [],
+      [SearchFilterKeyEnum.Priority]: [],
     });
     setResetKey((prev) => prev + 1);
     onApply({});

@@ -1,5 +1,10 @@
 import type { AgGridReactProps, CustomCellRendererProps } from "ag-grid-react";
-import type { GridApi } from "ag-grid-community";
+import type {
+  GridApi,
+  GridReadyEvent,
+  IServerSideDatasource,
+  IServerSideGetRowsParams,
+} from "ag-grid-community";
 import type { ColDef } from "ag-grid-enterprise";
 
 // Берём все пропсы AG Grid, но тему и локаль мы задаём сами — снаружи их не трогают
@@ -27,3 +32,7 @@ export type GpnCustomCellRendererProps<TData, TValue> = CustomCellRendererProps<
   TData,
   TValue
 >;
+
+export type GpnServerSideDatasource = IServerSideDatasource;
+export type GpnServerSideGetRowsParams = IServerSideGetRowsParams;
+export type GpnGridReadyEvent = GridReadyEvent;
