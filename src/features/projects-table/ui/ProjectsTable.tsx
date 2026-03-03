@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import type {
-  IServerSideDatasource,
-  IServerSideGetRowsParams,
-} from "ag-grid-community";
 import type { Project, SearchProjectsParams } from "entities/project";
-import { GpnTable, type GpnTableRef } from "shared/ui/gpn-table";
+import {
+  GpnTable,
+  type GpnTableRef,
+  type GpnGridReadyEvent,
+  type GpnServerSideDatasource,
+  type GpnServerSideGetRowsParams,
+} from "shared/ui/gpn-table";
 import { createServerSideDatasource } from "../model/createDatasource";
 import styles from "./ProjectsTable.module.css";
 import { columnDefs } from "./columnDefs";
@@ -24,9 +26,9 @@ export const ProjectsTable = ({ filters }: Props) => {
   );
 
   // Оборачиваем datasource, чтобы отслеживать загрузку
-  const datasource: IServerSideDatasource = useMemo(
+  const datasource: GpnServerSideDatasource = useMemo(
     () => ({
-      getRows(params: IServerSideGetRowsParams): void {
+      getRows(params: GpnServerSideGetRowsParams): void {
         setLoading(true);
 
         const originalSuccess = params.success.bind(params);
@@ -52,15 +54,17 @@ export const ProjectsTable = ({ filters }: Props) => {
     gridApiRef.current?.setGridOption("serverSideDatasource", datasource);
   }, [datasource]);
 
+  const handleGridReady = (event: GpnGridReadyEvent) => {
+    gridApiRef.current = event.api;
+    event.api.setGridOption("serverSideDatasource", datasource);
+  };
+
   return (
     <div className={styles.container}>
       <GpnTable<Project>
         rowModelType="serverSide"
         loading={isFirstLoadRef.current && loading}
-        onGridReady={(e) => {
-          gridApiRef.current = e.api;
-          e.api.setGridOption("serverSideDatasource", datasource);
-        }}
+        onGridReady={handleGridReady}
         columnDefs={columnDefs}
       />
     </div>

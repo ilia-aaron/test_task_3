@@ -1,9 +1,12 @@
+import { memo } from "react";
 import {
   type Project,
   type ProjectStatus,
   STATUS_ENUM,
 } from "entities/project";
 import type { GpnCustomCellRendererProps } from "shared/ui/gpn-table";
+
+type Props = GpnCustomCellRendererProps<Project, ProjectStatus>;
 
 // Маппинг статус → цвет (Consta токены)
 const STATUS_COLOR: Record<ProjectStatus, string> = {
@@ -13,9 +16,7 @@ const STATUS_COLOR: Record<ProjectStatus, string> = {
   [STATUS_ENUM.PLANNING]: "var(--color-bg-normal)",
 };
 
-export const StatusRenderer = (
-  props: GpnCustomCellRendererProps<Project, ProjectStatus>,
-) => {
+export const StatusRenderer = memo((props: Props) => {
   const status = props.value;
   if (!status) return null;
 
@@ -35,4 +36,4 @@ export const StatusRenderer = (
       {status}
     </span>
   );
-};
+});

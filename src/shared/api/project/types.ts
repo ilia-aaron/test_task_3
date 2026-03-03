@@ -21,18 +21,21 @@ export interface ProjectDto {
   priority: PriorityDto;
 }
 
-export enum SearchFilterKey {
+export enum SearchFilterKeyEnum {
   Department = "department",
   Status = "status",
   ManagerId = "managerId",
   Priority = "priority",
 }
 
-export type SearchFilterWithModifier = `${SearchFilterKey}_${FilterType}`;
-export type SearchFilters = SearchFilterKey | SearchFilterWithModifier;
+export type SearchFilterWithModifier = `${SearchFilterKeyEnum}_${FilterType}`;
+export type SearchFilters = SearchFilterKeyEnum | SearchFilterWithModifier;
 
 // создаем модификаторы для фильтров
-export const withModifier = <K extends SearchFilterKey, M extends FilterType>(
+export const withModifier = <
+  K extends SearchFilterKeyEnum,
+  M extends FilterType,
+>(
   key: K,
   modifier: M,
 ): `${K}_${M}` => `${key}_${modifier}` as `${K}_${M}`;

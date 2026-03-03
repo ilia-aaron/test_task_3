@@ -1,8 +1,6 @@
-import { useMemo } from "react";
 import { Combobox } from "@consta/uikit/Combobox";
-import { SearchFilterKey } from "shared/api";
-import { useFiltersContext } from "../model/context";
-import { createRenderValue } from "./renderSelectedValues";
+import { SearchFilterKeyEnum } from "shared/api";
+import { useSimpleFilterCombobox } from "../hooks/useSimpleFilterCombobox";
 import styles from "./ProjectsFilters.module.css";
 
 interface Props {
@@ -10,18 +8,9 @@ interface Props {
 }
 
 export const DepartmentFilter = ({ items }: Props) => {
-  const { filters, onChange } = useFiltersContext();
-  const selectedValues = useMemo(
-    () => filters.department || [],
-    [filters.department],
+  const { isSelected, renderValue, onChange } = useSimpleFilterCombobox(
+    SearchFilterKeyEnum.Department,
   );
-
-  const renderValue = useMemo(
-    () => createRenderValue<string>((item) => item, selectedValues),
-    [selectedValues],
-  );
-
-  const isSelected = selectedValues.length > 0 ? selectedValues : null;
 
   return (
     <Combobox
@@ -34,9 +23,7 @@ export const DepartmentFilter = ({ items }: Props) => {
       dropdownClassName={styles.dropdown}
       multiple
       renderValue={renderValue}
-      onChange={(value) => {
-        onChange(SearchFilterKey.Department, value || []);
-      }}
+      onChange={onChange}
     />
   );
 };

@@ -1,7 +1,9 @@
+import { memo } from "react";
+import { Text } from "@consta/uikit/Text";
 import { type Project, type Priority, PRIORITY_ENUM } from "entities/project";
 import type { GpnCustomCellRendererProps } from "shared/ui/gpn-table";
 
-import { Text } from "@consta/uikit/Text";
+type Props = GpnCustomCellRendererProps<Project, Priority>;
 
 const PRIORITY_STYLE: Record<Priority, string> = {
   [PRIORITY_ENUM.HIGH]: "var(--color-typo-alert)",
@@ -9,9 +11,7 @@ const PRIORITY_STYLE: Record<Priority, string> = {
   [PRIORITY_ENUM.LOW]: "var(--color-typo-success)",
 };
 
-export const PriorityRenderer = (
-  props: GpnCustomCellRendererProps<Project, Priority>,
-) => {
+export const PriorityRenderer = memo((props: Props) => {
   const priority = props.value;
   if (!priority) return null;
 
@@ -27,4 +27,4 @@ export const PriorityRenderer = (
       {priority}
     </Text>
   );
-};
+});
